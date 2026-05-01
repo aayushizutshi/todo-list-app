@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/todo.css">
+    <title>To-Do List</title>
+</head>
+<body>
+    <h2>Welcome!</h2>
+    <label for="input">What's on your mind?:</label>
+    <input type="text" id="input">
+    <button onclick="Add()">Add</button><br>
+
+    <h2>Here is your plan</h2>
+    <label for="data">To-Do</label><br>
+    <ul id="list"></ul>
+
+    <script>
+        const todolist = JSON.parse(localStorage.getItem("todos")) || [];
+        function Add(){
+            const inputBox = document.getElementById("input").value;
+
+            if(inputBox.trim() == ""){
+                return;
+            }
+            //Adding in Array
+            todolist.push(inputBox.trim());
+
+            //local storage m save krna
+            localStorage.setItem("todos", JSON.stringify(todolist));
+
+            const newItem = document.createElement("li");
+            newItem.innerHTML = inputBox.trim();
+            document.getElementById("list").appendChild(newItem);
+
+            document.getElementById("input").value=""; 
+        }
+
+        function loadTodos(){
+            //local storage se data lo
+            const saved = localStorage.getItem("todos");
+            if(saved){
+                const todos = JSON.parse(saved);
+
+                //Make list for every item
+                todos.forEach(item=>{
+                    const newItem = document.createElement("li");
+                    newItem.innerHTML = item;
+                    document.getElementById("list").appendChild(newItem);
+                });
+            }
+        }
+        loadTodos();
+    </script>
+</body>
+</html>
